@@ -25,6 +25,9 @@ namespace PasswordMeter
         /// Output veld: resultTextBlock
         /// </summary>
 
+        string userName;
+        string password;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -32,7 +35,56 @@ namespace PasswordMeter
 
         private void passwordMeterButton_Click(object sender, RoutedEventArgs e)
         {
+            password = passwordTextBox.Text;
+            password = password.Trim();
 
+            userName = userNameTextBox.Text;
+            userName = userName.Trim();
+
+            bool isNumber = false;
+            bool isUpperCase = false;
+            bool isLowerCase = false;
+            bool isDigit = false;
+            
+            bool containsUserName = password.Contains(userName);
+
+            for (int i = 0; i < password.Length; i++)
+            {
+                char letter;
+                string eerstVolgendeLetter = password.Substring(i, 1);
+
+                letter = char.Parse(eerstVolgendeLetter);
+
+                isDigit =char.IsDigit(letter);
+                if (isDigit)
+                {
+                    break;
+                }
+            }
+
+            bool contains10Characters = password.Length >= 10;
+
+            if(containsUserName == false && contains10Characters && isDigit)
+            {
+                resultTextBlock.Foreground = Brushes.Green;
+                resultTextBlock.Text = "Wachtwoord OK";
+            }
+            else if (!contains10Characters)
+            {
+                resultTextBlock.Foreground = Brushes.Orange;
+                resultTextBlock.Text = "Wachtwoord Niet OK";
+            }
+            else if(!isDigit)
+            {
+                resultTextBlock.Foreground = Brushes.Orange;
+                resultTextBlock.Text = "Wachtwoord Niet OK";
+            }
+            else
+            {
+                resultTextBlock.Foreground = Brushes.Red;
+                resultTextBlock.Text = "Wachtwoord Niet OK";
+            }
+            
         }
     }
 }
